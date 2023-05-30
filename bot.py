@@ -47,7 +47,21 @@ async def register(ctx, opponent: disnake.Member, political_opinion = disnake.Ro
         return
     client.db_register(political_opinion)   # регаем в базе
     await opponent.add_roles(role)  # какидываем роль
-    # добавить reply из discord_reply когда зарегали чела
+    await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
+
+@bot.slash_command(guild_ids=test_guilds,
+                    name='register',
+                    description='Registration')
+async def register(ctx, member: disnake.Member):
+    member = ctx.author
+    client = mysqlrequests.User(member.id)
+    if client.check:
+        await discord_reply.reply(ctx, False, 'Регистрация', 'regesuc')
+        return
+    
+    
+    
+
 
 
 print(f"{datetime.now()} Bot start")
