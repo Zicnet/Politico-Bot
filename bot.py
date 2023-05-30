@@ -10,14 +10,15 @@ from config import settings
 from mysqlconfig import host, user, password, db_name
 
 
-
+# config
 balance = mysqlrequests.User.balance
 political_opinion = mysqlrequests.User.political_opinion
-
 intents = disnake.Intents.default()
 test_guilds=[1112211843914670100]
 intents.voice_states = True
 
+
+# Bot config and sql connector
 bot = commands.Bot(
     command_prefix=settings['prefix'],
     help_command=None,
@@ -33,14 +34,14 @@ con = mysql.connector.connect(
 )
 cur = con.cursor()
 
-# bot event
 
+# bot event
 @bot.event
 async def on_ready():
     print(f"{datetime.now()} Bot ready")
 
-# bot command
 
+# bot command
 @bot.slash_command(guild_ids=test_guilds,
                     name='register',
                     description='Registration')
