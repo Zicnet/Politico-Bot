@@ -1,13 +1,13 @@
 import disnake
 import mysql.connector
 from message import messages
-from mysqlconfig import host, user, password, db_name
+from config import mysqlconfig
 
 con = mysql.connector.connect(
-    host=host,
-    user=user,
-    password=password,
-    database=db_name
+    host=mysqlconfig["host"],
+    user=mysqlconfig["user"],
+    password=mysqlconfig["password"],
+    database=mysqlconfig["db_name"],
 )
 cur = con.cursor()
 

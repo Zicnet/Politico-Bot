@@ -7,7 +7,7 @@ from mysqlrequests import User
 from datetime import datetime
 from disnake.ext import commands
 from config import settings
-from mysqlconfig import host, user, password, db_name
+from config import mysqlconfig
 
 
 # config
@@ -27,10 +27,10 @@ bot = commands.Bot(
     status=disnake.Status.streaming
 )
 con = mysql.connector.connect(
-    host=host,
-    user=user,
-    password=password,
-    database=db_name
+    host=mysqlconfig["host"],
+    user=mysqlconfig["user"],
+    password=mysqlconfig["password"],
+    database=mysqlconfig["db_name"],
 )
 cur = con.cursor()
 
