@@ -74,3 +74,4 @@ class User:
         con.commit()
         cur.close()
         self.user_update()
+
