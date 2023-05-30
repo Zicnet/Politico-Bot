@@ -22,7 +22,7 @@ async def reply(ctx, redgreen, head, text):
 async def reply_info(ctx,head):
     member = ctx.author
     embed = disnake.Embed(title="head", color=member.color)
-    embed.set_thumbnail(url=member.avatar_url)
+    embed.set_thumbnail(url=ctx.message.author.avatar_url)
     embed.add_field(name="Name", value=member.name, inline=True)
     embed.add_field(name="ID", value=User(member.id).id, inline=True)
     embed.add_field(name="Status", value=User(member.id).political_opinion, inline=True)
