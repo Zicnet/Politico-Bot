@@ -58,6 +58,7 @@ async def register(ctx, member: disnake.Member):
     if client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regesuc')
         return
+    await discord_reply.reply_info(ctx, 'Info')
     
     
     
