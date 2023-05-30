@@ -16,4 +16,3 @@ async def reply(ctx, redgreen, head, text):
         colour=color
     )
     await ctx.response.send_message(embed=embed)
-    return

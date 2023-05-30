@@ -1,6 +1,6 @@
 import mysql.connector
 from config import mysqlconfig
-import datetime
+from datetime import datetime
 
 con = mysql.connector.connect(
     host=mysqlconfig["host"],
@@ -20,14 +20,13 @@ class User:
         if record is None:
             self.discord_id = discordID
             self.check = False
-            return
-        
-        self.check = True   
-        self.id = record[0]
-        self.discord_id = record[1]
-        self.balance = record[2]
-        self.political_opinion = record[3]
-        self.date_registrator = record[4]
+        else:
+            self.check = True
+            self.id = record[0]
+            self.discord_id = record[1]
+            self.balance = record[2]
+            self.political_opinion = record[3]
+            self.date_registrator = record[4]
 
     def balance(self, money):
         cur = con.cursor()
@@ -41,9 +40,11 @@ class User:
         con.commit()
         cur.close()
 
-    def db_register(self, political_opinion):
+    def db_register(self, role_id):
         cur = con.cursor()
+        print(self)
+
         cur.execute(
-            f"INSERT INTO user(discord_id,balance,political_opinion,date_registrator) VALUES({self.discord_id}, '0', '{political_opinion}','{datetime.now().date()}')")
+            f"INSERT INTO user(discord_id,balance,political_opinion,date_registrator) VALUES({self.discord_id}, '0', '{role_id}', '{datetime.now().date()}')")
         con.commit()
         cur.close()
