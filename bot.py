@@ -39,19 +39,15 @@ async def on_ready():
                     name='register',
                     description='Registration')
 async def register(ctx, opponent: disnake.Member, political_opinion = disnake.Role):
-    member = ctx.author
-    role = disnake.utils.get(ctx.guild.roles, id=political_opinion)
-    await opponent.add_roles(role)
-    reply = mysqlrequests.User.reply
+    member = ctx.author # получаем чела
+    role = disnake.utils.get(ctx.guild.roles, id=political_opinion)     # получаем объект роли, для вписанной роли
     client = mysqlrequests.User(member.id)
     if client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
         return
-
-    cur = con.cursor()
-    cur.execute(f"INSERT INTO user(discord_id,balance,political_opinion,date_registrator) VALUES({opponent.id}, '0', '{political_opinion}','{datetime.now().date()}')")
-    con.commit()
-    cur.close()
+    client.db_register(political_opinion)   # регаем в базе
+    await opponent.add_roles(role)  # какидываем роль
+    # добавить reply из discord_reply когда зарегали чела
 
 
 print(f"{datetime.now()} Bot start")
