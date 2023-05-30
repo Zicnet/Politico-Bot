@@ -1,7 +1,6 @@
-import disnake
 import mysql.connector
-from message import messages
 from config import mysqlconfig
+import datetime
 
 con = mysql.connector.connect(
     host=mysqlconfig["host"],
@@ -19,6 +18,7 @@ class User:
         record = cur.fetchone()
 
         if record is None:
+            self.discord_id = discordID
             self.check = False
             return
         
@@ -28,7 +28,6 @@ class User:
         self.balance = record[2]
         self.political_opinion = record[3]
         self.date_registrator = record[4]
-
 
     def balance(self, money):
         cur = con.cursor()
@@ -42,18 +41,9 @@ class User:
         con.commit()
         cur.close()
 
-    async def reply(self,ctx, redgreen, head, text):
-        if text in messages:
-            text = messages[text]
-        if redgreen:
-            color = disnake.Colour.from_rgb(51, 153, 102)
-        else:
-            color = disnake.Colour.from_rgb(255, 102, 102)
-        embed = disnake.Embed(
-            title=head,
-            description=text,
-            colour=color
-        )
-        await ctx.response.send_message(embed=embed)
-
-        return
+    def db_register(self, political_opinion):
+        cur = con.cursor()
+        cur.execute(
+            f"INSERT INTO user(discord_id,balance,political_opinion,date_registrator) VALUES({self.discord_id}, '0', '{political_opinion}','{datetime.now().date()}')")
+        con.commit()
+        cur.close()
