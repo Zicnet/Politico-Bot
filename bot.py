@@ -50,9 +50,9 @@ async def register(ctx, opponent: disnake.Member, political_opinion = disnake.Ro
     await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
 
 @bot.slash_command(guild_ids=test_guilds,
-                    name='register',
+                    name='info',
                     description='Registration')
-async def register(ctx, member: disnake.Member):
+async def info(ctx, member: disnake.Member):
     member = ctx.author
     client = mysqlrequests.User(member.id)
     if client.check:
