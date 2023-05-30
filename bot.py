@@ -38,31 +38,16 @@ async def on_ready():
 @bot.slash_command(guild_ids=test_guilds,
                     name='register',
                     description='Registration')
-async def register(ctx, opponent: disnake.Member, role: disnake.Role):
-    member = ctx.author # получаем чела    
+async def register(ctx, opponent: disnake.Member, political_opinion = disnake.Role):
+    member = ctx.author # получаем чела
+    role = disnake.utils.get(ctx.guild.roles, id=political_opinion)     # получаем объект роли, для вписанной роли
     client = mysqlrequests.User(member.id)
     if client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
         return
-    client.db_register(role.id)   # регаем в базе
+    client.db_register(political_opinion)   # регаем в базе
     await opponent.add_roles(role)  # какидываем роль
-    await discord_reply.reply(ctx, True, 'Регистрация', 'regesuc')
-
-    
-@bot.slash_command(guild_ids=test_guilds,
-                    name='info',
-                    description='Registration')
-async def info(ctx, member: disnake.Member):
-    member = ctx.author
-    client = mysqlrequests.User(member.id)
-    if not client.check:
-        await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
-        return
-    await discord_reply.reply_info(ctx, 'Info')
-    
-    
-    
-
+    # добавить reply из discord_reply когда зарегали чела
 
 
 print(f"{datetime.now()} Bot start")
