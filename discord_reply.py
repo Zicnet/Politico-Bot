@@ -21,8 +21,6 @@ async def reply(ctx, redgreen, head, text):
 
 async def reply_info(ctx,head):
     member = ctx.author
-    if text in messages:
-        text = messages[text]
     embed = disnake.Embed(title="head", color=member.color)
     embed.set_thumbnail(url=member.avatar_url)
     embed.add_field(name="Name", value=member.name, inline=True)
