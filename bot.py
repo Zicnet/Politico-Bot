@@ -57,6 +57,5 @@ async def info(ctx, member: disnake.Member):
         return
     await discord_reply.reply_info(ctx, 'Info')
 
-
 print(f"{datetime.now()} Bot start")
 bot.run(settings['token'])
