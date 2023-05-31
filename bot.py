@@ -11,8 +11,6 @@ from config import mysqlconfig
 import discord_reply
 
 # config
-balance = mysqlrequests.User.balance
-political_opinion = mysqlrequests.User.political_opinion
 intents = disnake.Intents.default()
 test_guilds = [1112211843914670100]
 intents.voice_states = True
