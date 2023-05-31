@@ -9,7 +9,8 @@ import bot_logic
 
 # config
 intents = disnake.Intents.default()
-main_guild = [1112211843914670100]
+main_guild = 1112211843914670100
+main_guild_scr = [1112211843914670100]
 intents.voice_states = True
 intents.message_content = True  # Добавьте эту строку
 
@@ -27,11 +28,15 @@ bot = commands.Bot(
 async def on_ready():
     print(f"{datetime.now()} Bot ready")
 
-
-# bot command
-@bot.slash_command(name='register', description='Registration')
-async def register(ctx, role: disnake.Role):
-    await bot_logic.register(ctx, role)
+@bot.event
+async def on_message(message):
+    msg = message.content.lower()
+    try:
+        message.guild.id == None 
+    except AttributeError:
+        if msg == "start":
+            guild = bot.get_guild(main_guild)
+            await bot_logic.register(message,guild)
 
 
 @bot.slash_command(name='info', description='Registration')
@@ -39,7 +44,7 @@ async def info(ctx):
     await bot_logic.info(ctx)
 
 
-@bot.slash_command(guild_ids=main_guild, name='echo', description='echo')
+@bot.slash_command(guild_ids=main_guild_scr, name='echo', description='echo')
 @commands.has_permissions(administrator=True)
 async def echo(ctx, text: str):
     channel = ctx.channel
