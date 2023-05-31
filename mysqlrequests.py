@@ -16,11 +16,11 @@ class User:
     def __init__(self, discordID):
         self.discord_id = discordID
         self.id = None
-        self.balance = None
-        self.political_opinion = None
         self.date_registrator = None
+        self.player = None
         if not self.user_check():
             return
+        self.check = True
         self.user_update()
 
     def user_check(self):
@@ -38,61 +38,120 @@ class User:
 
         # Получаем информацию о пользователе из базы данных по его discord_id
         cur.execute(
-            f"SELECT id, discord_id, balance, political_opinion, date_registrator FROM user WHERE discord_id = {self.discord_id}")
+            f"SELECT id, discord_id, date_registrator FROM user WHERE discord_id = {self.discord_id}")
         record = cur.fetchone()
 
         self.id = record[0]
         self.discord_id = record[1]
-        self.balance = record[2]
-        self.political_opinion = record[3]
-        self.date_registrator = record[4]
+        self.date_registrator = record[2]
+        self.player = Player(self.id)
 
-    def set_money(self, money):
-        cur = con.cursor()
-        cur.execute(f"UPDATE user SET balance = '{money}' WHERE discord_id = {self.discord_id}")
-        con.commit()
-        cur.close()
-        self.user_update()
-
-    def add_money(self, money):
-        cur = con.cursor()
-        cur.execute(f"UPDATE user SET balance = '{self.balance + money}' WHERE discord_id = {self.discord_id}")
-        con.commit()
-        cur.close()
-        self.user_update()
-
-    def set_political_opinion(self, string):
-        cur = con.cursor()
-
-        # Обновляем политическое мнение пользователя в базе данных
-        cur.execute(f"UPDATE user SET political_opinion = '{string}' WHERE discord_id = {self.discord_id}")
-        con.commit()
-        cur.close()
-        self.user_update()
-
-    def db_register(self, role_id):
+    def db_register(self):
         cur = con.cursor()
 
         # Регистрируем пользователя в базе данных
         cur.execute(
-            f"INSERT INTO user(discord_id,balance,political_opinion,date_registrator) VALUES({self.discord_id}, '0', '{role_id}', '{datetime.now().date()}')")
+            f"INSERT INTO user(discord_id, date_registrator) VALUES({self.discord_id},  '{datetime.now().date()}')")
         con.commit()
         cur.close()
         self.user_update()
 
 
+class Player:
+    def __init__(self, request_id):
+        self.request_id = request_id
+        self.id = None
+        self.political_opinion_id = None
+        self.political_opinion = None
+        self.money = None
+        self.status = None
+        self.check = self.user_check()
+        self.player_update()
+
+    def user_check(self):
+        cur = con.cursor()
+        cur.execute(
+            f"SELECT id FROM player WHERE id = {self.request_id}")
+        record = cur.fetchone()
+        self.check = False if record is None else True
+        return self.check
+
+    def create_new_player(self):
+        if self.check:
+            return
+        cur = con.cursor()
+        cur.execute(
+            f"INSERT INTO player(id, political_opinion_id, money, status) VALUES({self.request_id},  0, 0, 'free')")
+        con.commit()
+        cur.close()
+        self.player_update()
+
+    def player_update(self):
+        if not self.check:
+            return
+        cur = con.cursor()
+        cur.execute(
+            f"SELECT id, political_opinion_id, money, status FROM player WHERE id = {self.request_id}")
+        record = cur.fetchone()
+        self.id = record[0]
+        self.political_opinion_id = record[1]
+        self.money = record[2]
+        self.status = record[3]
+        self.political_opinion = PoliticalOpinion(self.political_opinion_id)
+
+    def set_money(self, money):
+        if not self.check:
+            return
+        cur = con.cursor()
+        cur.execute(f"UPDATE player SET money = '{money}' WHERE id = {self.id}")
+        con.commit()
+        cur.close()
+        self.player_update()
+
+    def add_money(self, money):
+        if not self.check:
+            return
+        cur = con.cursor()
+        cur.execute(f"UPDATE player SET money = '{self.money + money}' WHERE id = {self.id}")
+        con.commit()
+        cur.close()
+        self.player_update()
+
+    def set_political_opinion(self, request_opinion_id):
+        if not self.check:
+            return
+        cur = con.cursor()
+        cur.execute(f"UPDATE player SET political_opinion_id = '{request_opinion_id}' WHERE id = {self.id}")
+        con.commit()
+        cur.close()
+        self.player_update()
+
+
 class PoliticalOpinion:
     def __init__(self, request):
+        self.request = request
         self.id = None
         self.name = None
         self.discord_id = None
         self.color = None
-        self.get_opinion(request)
+        self.check = None
+        if not self.opinion_check():
+            return
+        self.get_opinion()
 
-    def get_opinion(self, request):
+    def opinion_check(self):
         cur = con.cursor()
         cur.execute(
-            f"SELECT id, name, discord_id, color FROM opinion WHERE name = '{request}' OR discord_id = '{request}';"
+            f"SELECT id FROM opinion WHERE id = {self.request} OR name = '{self.request}' OR discord_id = '{self.request}';"
+        )
+        record = cur.fetchone()
+        self.check = False if record is None else True
+        return self.check
+
+    def get_opinion(self):
+        cur = con.cursor()
+        cur.execute(
+            f"SELECT id, name, discord_id, color FROM opinion WHERE id = {self.request} OR name = '{self.request}' OR discord_id = '{self.request}';"
         )
         record = cur.fetchone()
         self.id = record[0]
