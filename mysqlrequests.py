@@ -61,7 +61,7 @@ class User:
         cur.close()
         self.user_update()
 
-    def political_opinion(self, string):
+    def set_political_opinion(self, string):
         cur = con.cursor()
 
         # Обновляем политическое мнение пользователя в базе данных
@@ -79,3 +79,23 @@ class User:
         con.commit()
         cur.close()
         self.user_update()
+
+
+class PoliticalOpinion:
+    def __init__(self, request):
+        self.id = None
+        self.name = None
+        self.discord_id = None
+        self.color = None
+        self.get_opinion(request)
+
+    def get_opinion(self, request):
+        cur = con.cursor()
+        cur.execute(
+            f"SELECT id, name, discord_id, color FROM opinion WHERE name = '{request}' OR discord_id = '{request}';"
+        )
+        record = cur.fetchone()
+        self.id = record[0]
+        self.name = record[1]
+        self.discord_id = record[2]
+        self.color = record[3]
