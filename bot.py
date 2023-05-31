@@ -35,17 +35,16 @@ async def on_ready():
 @bot.slash_command(guild_ids=test_guilds,
                    name='register',
                    description='Registration')
-async def register(ctx, opponent: disnake.Member, role: disnake.Role):
-    member = ctx.author 
-    partion = mysqlrequests.PoliticalOpinion(role.id)
+async def register(ctx, role: disnake.Role):
+    member = ctx.author  # получаем чела
     client = mysqlrequests.User(member.id)
+    pol_opinion = mysqlrequests.PoliticalOpinion(role.id)
     if client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
         return
-    client.db_register
-    print(partion.id)
-    client.player.set_political_opinion(partion.id)
-    await opponent.add_roles(role)  # какидываем роль
+    client.db_register()  # регаем в базе
+    client.player.set_political_opinion(pol_opinion.id)
+    await member.add_roles(role)  # какидываем роль
     await discord_reply.reply(ctx, True, 'Регистрация', 'regesuc')
 
 
