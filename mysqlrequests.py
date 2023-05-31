@@ -58,6 +58,8 @@ class User:
         con.commit()
         cur.close()
         self.user_update()
+        self.player.create_new_player()
+        self.user_update()
 
 
 class Player:
