@@ -9,7 +9,6 @@ import bot_logic
 
 # config
 intents = disnake.Intents.default()
-test_guilds = [1112211843914670100]
 intents.voice_states = True
 
 # Bot config and sql connector
@@ -29,12 +28,12 @@ async def on_ready():
 
 
 # bot command
-@bot.slash_command(guild_ids=test_guilds, name='register', description='Registration')
+@bot.slash_command(name='register', description='Registration')
 async def register(ctx, role: disnake.Role):
     await bot_logic.register(ctx, role)
 
 
-@bot.slash_command(guild_ids=test_guilds, name='info', description='Registration')
+@bot.slash_command(name='info', description='Registration')
 async def info(ctx):
     await bot_logic.info(ctx)
 

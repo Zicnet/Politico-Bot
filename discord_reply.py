@@ -21,6 +21,7 @@ async def reply(ctx, redgreen, head, text):
 
 
 async def reply_info(ctx, head):
+    await ctx.response.defer()
     member = ctx.author
     user = mysqlrequests.User(member.id)
     embed = disnake.Embed(title=head, color=member.color)
@@ -31,4 +32,4 @@ async def reply_info(ctx, head):
     embed.add_field(name="Political Opinion", value=user.player.political_opinion.name, inline=True)
     embed.add_field(name="Balance", value=user.player.money, inline=True)
     embed.add_field(name="Date Registrator", value=user.date_registrator, inline=True)
-    await ctx.response.send_message(embed=embed)
+    await ctx.send(embed=embed)
