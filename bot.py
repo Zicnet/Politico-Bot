@@ -36,12 +36,15 @@ async def on_ready():
                    name='register',
                    description='Registration')
 async def register(ctx, opponent: disnake.Member, role: disnake.Role):
-    member = ctx.author  # получаем чела
+    member = ctx.author 
+    partion = mysqlrequests.PoliticalOpinion(role.id)
     client = mysqlrequests.User(member.id)
     if client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
         return
-    client.db_register(role.id)  # регаем в базе
+    client.db_register
+    print(partion.id)
+    client.player.set_political_opinion(partion.id)
     await opponent.add_roles(role)  # какидываем роль
     await discord_reply.reply(ctx, True, 'Регистрация', 'regesuc')
 

@@ -1,6 +1,6 @@
 import disnake
 import mysql.connector
-from mysqlrequests import User
+import mysqlrequests 
 from message import messages
 
 
@@ -21,11 +21,13 @@ async def reply(ctx, redgreen, head, text):
 
 async def reply_info(ctx,head):
     member = ctx.author
+    user = mysqlrequests.User(member.id)
     embed = disnake.Embed(title="head", color=member.color)
     embed.set_thumbnail(url=member.avatar_url)
     embed.add_field(name="Name", value=member.name, inline=True)
-    embed.add_field(name="ID", value=User(member.id).id, inline=True)
-    embed.add_field(name="Status", value=User(member.id).political_opinion, inline=True)
-    embed.add_field(name="Balance", value=User(member.id).balance, inline=True)
-    embed.add_field(name="Date Registrator", value=User(member.id).balance.date_registrator, inline=True)
+    embed.add_field(name="ID", value=user.id, inline=True)
+    embed.add_field(name="Status", value=user.player.status, inline=True)
+    embed.add_field(name="Political Opinion", value=user.player.political_opinion.name, inline=True)
+    embed.add_field(name="Balance", value=user.player.money, inline=True)
+    embed.add_field(name="Date Registrator", value=user.date_registrator, inline=True)
     await ctx.response.send_message(embed=embed)

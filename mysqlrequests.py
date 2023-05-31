@@ -48,14 +48,16 @@ class User:
 
     def db_register(self):
         cur = con.cursor()
-
+        if self.check:
+            return
         # Регистрируем пользователя в базе данных
         cur.execute(
             f"INSERT INTO user(discord_id, date_registrator) VALUES({self.discord_id},  '{datetime.now().date()}')")
         con.commit()
         cur.close()
         self.user_update()
-
+        self.player.create_new_player()
+        self.user_update() 
 
 class Player:
     def __init__(self, request_id):
