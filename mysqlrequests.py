@@ -70,6 +70,7 @@ class Player:
         self.political_opinion = None
         self.money = None
         self.status = None
+        self.exp = None
         self.check = self.user_check()
         self.player_update()
 
@@ -96,12 +97,13 @@ class Player:
             return
         cur = con.cursor()
         cur.execute(
-            f"SELECT id, political_opinion_id, money, status FROM player WHERE id = {self.request_id}")
+            f"SELECT id, political_opinion_id, money, status, exp FROM player WHERE id = {self.request_id}")
         record = cur.fetchone()
         self.id = record[0]
         self.political_opinion_id = record[1]
         self.money = record[2]
         self.status = record[3]
+        self.exp = record[4]
         self.political_opinion = PoliticalOpinion(self.political_opinion_id)
 
     def set_money(self, money):
