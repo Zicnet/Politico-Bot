@@ -1,11 +1,14 @@
-import datetime
-from datetime import datetime
-
 import disnake
+import datetime
+import mysqlrequests
+import mysql.connector
+from message import messages
+from mysqlrequests import User
+from datetime import datetime
 from disnake.ext import commands
-
 from config import settings
-import bot_logic
+from config import mysqlconfig
+import discord_reply
 
 # config
 intents = disnake.Intents.default()
