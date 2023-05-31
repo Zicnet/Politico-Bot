@@ -47,11 +47,16 @@ class User:
         self.political_opinion = record[3]
         self.date_registrator = record[4]
 
-    def balance(self, money):
+    def set_money(self, money):
         cur = con.cursor()
-
-        # Обновляем баланс пользователя в базе данных
         cur.execute(f"UPDATE user SET balance = '{money}' WHERE discord_id = {self.discord_id}")
+        con.commit()
+        cur.close()
+        self.user_update()
+
+    def add_money(self, money):
+        cur = con.cursor()
+        cur.execute(f"UPDATE user SET balance = '{self.balance + money}' WHERE discord_id = {self.discord_id}")
         con.commit()
         cur.close()
         self.user_update()
@@ -74,4 +79,3 @@ class User:
         con.commit()
         cur.close()
         self.user_update()
-
