@@ -22,9 +22,6 @@ bot = commands.Bot(
 )
 
 
-
-
-
 # bot event
 @bot.event
 async def on_ready():
