@@ -18,7 +18,8 @@ async def register(ctx, role):
     await member.add_roles(role)  # какидываем роль
 
 
-async def info(ctx, user):
+async def info(ctx):
+    user = ctx.author
     client = mysqlrequests.User(user.id)
     if not client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')

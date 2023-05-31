@@ -156,3 +156,4 @@ cython_debug/
 __pycache__/config.cpython-311.pyc
 __pycache__/message.cpython-311.pyc
 *.pyc
+*.pyc

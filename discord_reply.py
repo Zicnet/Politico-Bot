@@ -19,11 +19,12 @@ async def reply(ctx, redgreen, head, text):
     )
     await ctx.response.send_message(embed=embed)
 
-async def reply_info(ctx,head):
+
+async def reply_info(ctx, head):
     member = ctx.author
     user = mysqlrequests.User(member.id)
-    embed = disnake.Embed(title="head", color=member.color)
-    embed.set_thumbnail(url=member.avatar_url)
+    embed = disnake.Embed(title=head, color=member.color)
+    embed.set_thumbnail(url=member.display_avatar)
     embed.add_field(name="Name", value=member.name, inline=True)
     embed.add_field(name="ID", value=user.id, inline=True)
     embed.add_field(name="Status", value=user.player.status, inline=True)
