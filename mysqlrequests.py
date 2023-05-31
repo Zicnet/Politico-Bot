@@ -47,6 +47,8 @@ class User:
         self.player = Player(self.id)
 
     def db_register(self):
+        if self.check:
+            return
         cur = con.cursor()
 
         # Регистрируем пользователя в базе данных
@@ -54,6 +56,8 @@ class User:
             f"INSERT INTO user(discord_id, date_registrator) VALUES({self.discord_id},  '{datetime.now().date()}')")
         con.commit()
         cur.close()
+        self.user_update()
+        self.player.create_new_player()
         self.user_update()
 
 
