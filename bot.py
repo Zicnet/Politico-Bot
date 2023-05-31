@@ -1,14 +1,11 @@
-import disnake
 import datetime
-import mysqlrequests
-import mysql.connector
-from message import messages
-from mysqlrequests import User
 from datetime import datetime
+
+import disnake
 from disnake.ext import commands
+
 from config import settings
-from config import mysqlconfig
-import discord_reply
+import bot_logic
 
 # config
 intents = disnake.Intents.default()
@@ -42,17 +39,16 @@ async def register(ctx, role: disnake.Role):
     if client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
         return
-    await discord_reply.reply(ctx, True, 'Регистрация', 'regesuc')
     client.db_register()  # регаем в базе
     client.player.set_political_opinion(pol_opinion.id)
     await member.add_roles(role)  # какидываем роль
-
+    await discord_reply.reply(ctx, True, 'Регистрация', 'regesuc')
 
 
 @bot.slash_command(guild_ids=test_guilds,
                    name='info',
                    description='Registration')
-async def info(ctx, member: disnake.Member):    
+async def info(ctx, member: disnake.Member):
     member = ctx.author
     client = mysqlrequests.User(member.id)
     if not client.check:
