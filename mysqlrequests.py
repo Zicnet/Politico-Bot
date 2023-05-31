@@ -47,6 +47,8 @@ class User:
         self.player = Player(self.id)
 
     def db_register(self):
+        if self.check:
+            return
         cur = con.cursor()
         if self.check:
             return
@@ -56,8 +58,7 @@ class User:
         con.commit()
         cur.close()
         self.user_update()
-        self.player.create_new_player()
-        self.user_update() 
+
 
 class Player:
     def __init__(self, request_id):
