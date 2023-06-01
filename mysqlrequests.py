@@ -71,6 +71,7 @@ class Player:
         self.money = None
         self.status = None
         self.exp = None
+        self.level = None
         self.check = self.user_check()
         self.player_update()
 
@@ -87,7 +88,7 @@ class Player:
             return
         cur = con.cursor()
         cur.execute(
-            f"INSERT INTO player(id, political_opinion_id, money, status) VALUES({self.request_id},  0, 0, 'free')")
+            f"INSERT INTO player(id, status) VALUES({self.request_id}, 'free')")
         con.commit()
         cur.close()
         self.player_update()
@@ -97,13 +98,14 @@ class Player:
             return
         cur = con.cursor()
         cur.execute(
-            f"SELECT id, political_opinion_id, money, status, exp FROM player WHERE id = {self.request_id}")
+            f"SELECT id, political_opinion_id, money, status, exp, level FROM player WHERE id = {self.request_id}")
         record = cur.fetchone()
         self.id = record[0]
         self.political_opinion_id = record[1]
         self.money = record[2]
         self.status = record[3]
         self.exp = record[4]
+        self.level = record[5]
         self.political_opinion = PoliticalOpinion(self.political_opinion_id)
 
     def set_money(self, money):
@@ -133,6 +135,14 @@ class Player:
         cur.close()
         self.player_update()
 
+    def add_exp(self, point):
+        if not self.check:
+            return
+        cur = con.cursor()
+        cur.execute(f"UPDATE player SET exp = '{self.exp+point}' WHERE id = {self.id}")
+        con.commit()
+        cur.close()
+        self.player_update()
 
 class PoliticalOpinion:
     def __init__(self, request):
