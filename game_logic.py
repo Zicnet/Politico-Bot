@@ -1,3 +1,5 @@
+import mysqlrequests
+
 
 async def current_level(ctx):
     member = ctx.author

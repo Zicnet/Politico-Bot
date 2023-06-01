@@ -44,19 +44,19 @@ async def info(ctx):
     await bot_logic.info(ctx)
 
 
-# bot command
-@bot.slash_command(guild_ids=test_guilds,
-                   name='register',
-                   description='Registration')
-async def register(ctx, role: disnake.Role):
-    bot_logic.register(ctx, role)
+@bot.slash_command(guild_ids=main_guild_scr, name='echo', description='echo')
+@commands.has_permissions(administrator=True)
+async def echo(ctx, text: str):
+    channel = ctx.channel
+    print(channel)
+    await channel.send(text)
+    await ctx.author.send(f'Я отправил сообщение: {text} | в канал {channel}')
 
 
-@bot.slash_command(guild_ids=test_guilds,
-                   name='info',
-                   description='Registration')
-async def info(ctx, member: disnake.Member):
-    bot_logic.info(ctx, member)
+@echo.error
+async def echo_error(ctx, error):
+    if isinstance(error, commands.MissingPermissions):
+        await ctx.author.send("У вас недостаточно прав команды ``/echo``.")
 
 print(f"{datetime.now()} Bot start")
 bot.run(settings['token'])
