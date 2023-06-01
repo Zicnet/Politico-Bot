@@ -1,24 +1,34 @@
 import datetime
 from datetime import datetime
 
+from disnake.utils import get
+
 import mysqlrequests
 import discord_reply
 
 
-async def register(ctx, role):
-    member = ctx.author  # получаем чела
-    client = mysqlrequests.User(member.id)
-    pol_opinion = mysqlrequests.PoliticalOpinion(role.id)
-    if client.check:
-        await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
+async def register(ctx, guild):
+    discordUser = ctx.author
+    discordUser = guild.get_member(discordUser.id)
+    party = mysqlrequests.PoliticalOpinion(0)
+    discordRole = get(guild.roles, name=party.name)
+    user = mysqlrequests.User(discordUser.id)
+    discordMainRole = get(guild.roles, name="*")
+    await discordUser.add_roles(discordMainRole)
+    if user.check:
+        await discord_reply.send_to(discordUser, False, 'Регистрация', 'isAlreadyRegistered')
+        party = user.player.political_opinion
+        discordRole = get(guild.roles, name=party.name)
+        await discordUser.add_roles(discordRole)
         return
-    await discord_reply.reply(ctx, True, 'Регистрация', 'regesuc')
-    client.db_register()  # регаем в базе
-    client.player.set_political_opinion(pol_opinion.id)
-    await member.add_roles(role)  # какидываем роль
+    user.db_register()
+    await discordUser.add_roles(discordRole)
+    await discord_reply.send_to(discordUser, True, 'Успешная регистрация', 'kykold')
 
+    
 
-async def info(ctx, user):
+async def info(ctx):
+    user = ctx.author
     client = mysqlrequests.User(user.id)
     if not client.check:
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
