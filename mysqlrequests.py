@@ -175,3 +175,22 @@ class PoliticalOpinion:
         self.name = record[1]
         self.discord_id = record[2]
         self.color = record[3]
+
+
+class Exp:
+    def get_need_xp(level):
+        cur = con.cursor()
+        cur.execute(
+            f"SELECT exp_exp FROM exp WHERE exp_lvl = {level}"
+        )
+        record = cur.fetchone()
+        req = 999999999 if record is None else record[0]
+        return req
+
+    def get_current_level(exp):
+        cur = con.cursor()
+        cur.execute(
+            f"SELECT MAX(exp_lvl) exp_lvl FROM exp WHERE exp_exp <= {exp}"
+        )
+        record = cur.fetchone()
+        return record[0]
