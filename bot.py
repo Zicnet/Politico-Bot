@@ -29,18 +29,14 @@ async def on_ready():
 
 
 # bot command
-@bot.slash_command(guild_ids=test_guilds,
-                   name='register',
-                   description='Registration')
+@bot.slash_command(guild_ids=test_guilds, name='register',description='Registration')
 async def register(ctx, role: disnake.Role):
-    bot_logic.register(ctx, role)
+    await bot_logic.register(ctx, role)
 
 
-@bot.slash_command(guild_ids=test_guilds,
-                   name='info',
-                   description='Registration')
+@bot.slash_command(guild_ids=test_guilds, name='info',description='Registration')
 async def info(ctx, member: disnake.Member):
-    bot_logic.info(ctx, member)
+    await bot_logic.info(ctx, member)
 
 print(f"{datetime.now()} Bot start")
 bot.run(settings['token'])
