@@ -1,6 +1,7 @@
 import disnake
 import mysql.connector
 import mysqlrequests 
+import game_logic
 from message import messages
 
 
@@ -44,6 +45,7 @@ async def reply_info(ctx, head):
     embed.add_field(name="ID", value=user.id, inline=True)
     embed.add_field(name="Status", value=user.player.status, inline=True)
     embed.add_field(name="Political Opinion", value=user.player.political_opinion.name, inline=True)
+    embed.add_field(name="Level", value= user.player.level, inline=True)
     embed.add_field(name="Balance", value=user.player.money, inline=True)
     embed.add_field(name="Date Registrator", value=user.date_registrator, inline=True)
     await ctx.send(embed=embed)
