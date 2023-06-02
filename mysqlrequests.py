@@ -15,8 +15,9 @@ cur = con.cursor()
 
 
 class User:
-    def __init__(self, discordID):
-        self.discord_id = discordID
+    def __init__(self, value_request):
+        self.value_request = value_request
+        self.discord_id = None
         self.id = None
         self.date_registrator = None
         self.player = None
@@ -40,7 +41,7 @@ class User:
 
         # Получаем информацию о пользователе из базы данных по его discord_id
         cur.execute(
-            f"SELECT id, discord_id, date_registrator FROM user WHERE discord_id = {self.discord_id}")
+            f"SELECT id, discord_id, date_registrator FROM user WHERE discord_id = {self.value_request} OR id = {self.value_request}")
         record = cur.fetchone()
 
         self.id = record[0]
