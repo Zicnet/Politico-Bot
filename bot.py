@@ -10,6 +10,7 @@ import bot_logic
 import game_logic
 import mysqlrequests
 
+
 # config
 intents = disnake.Intents.default()
 main_guild = 1112211843914670100
