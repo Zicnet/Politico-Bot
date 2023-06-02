@@ -13,7 +13,7 @@ async def gl_add_exp(user, count):
         y = 0
         while y < x:
             y += 1
-            await discord_reply.send_to_id(user.discord_id, True, 'LVLUP', 'LevelHuy')
+            await discord_reply.send_to_id(user.discord_id, True, 'Повышение уровня', 'LevelUP')
             user.player.add_level()
         return True
     return False

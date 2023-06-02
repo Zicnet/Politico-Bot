@@ -31,7 +31,7 @@ class User:
 
         # Получаем информацию о пользователе из базы данных по его discord_id
         cur.execute(
-            f"SELECT id FROM user WHERE discord_id = {self.discord_id}")
+            f"SELECT id FROM user WHERE discord_id = {self.value_request} OR id = {self.value_request}")
         record = cur.fetchone()
         self.check = False if record is None else True
         return self.check

@@ -1,5 +1,5 @@
 import disnake
-import mysql.connector
+from disnake.ext import commands
 import mysqlrequests 
 from message import messages
 
