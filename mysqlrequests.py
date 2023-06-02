@@ -147,10 +147,8 @@ class Player:
         self.player_update()
 
     def add_level(self):
-        print('add_leve')
         if not self.check:
             return
-        print('я даю левел')
         cur = con.cursor()
         cur.execute(f"UPDATE player SET level = '{self.level+1}' WHERE id = {self.id}")
         con.commit()

@@ -7,6 +7,8 @@ from disnake.ext import commands
 import discord_reply
 from config import settings
 import bot_logic
+import game_logic
+import mysqlrequests
 
 # config
 intents = disnake.Intents.default()

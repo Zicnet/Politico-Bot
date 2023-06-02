@@ -1,3 +1,4 @@
+import disnake
 import mysql.connector
 import mysqlrequests 
 from message import messages
@@ -5,7 +6,7 @@ from message import messages
 guild_object = None
 
 
-# заготовка для ответов
+# заготовка для ответовs
 async def reply(ctx, redgreen, head, text):
     if text in messages:
         text = messages[text]
