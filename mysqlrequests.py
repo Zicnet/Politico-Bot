@@ -155,6 +155,16 @@ class Player:
         cur.close()
         self.player_update()
 
+    def set_status(self, status):
+        if not self.check:
+            return
+        cur = con.cursor()
+        cur.execute(f"UPDATE player SET status = '{status}' WHERE id = {self.id}")
+        con.commit()
+        cur.close()
+        self.player_update()
+
+
 class PoliticalOpinion:
     def __init__(self, request):
         self.request = request
