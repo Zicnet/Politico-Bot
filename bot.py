@@ -4,6 +4,7 @@ from datetime import datetime
 import disnake
 from disnake.ext import commands
 
+import discord_reply
 from config import settings
 import bot_logic
 
@@ -11,6 +12,7 @@ import bot_logic
 intents = disnake.Intents.default()
 main_guild = 1112211843914670100
 main_guild_scr = [1112211843914670100]
+main_guild_object = None
 intents.voice_states = True
 intents.message_content = True  # Добавьте эту строку
 
@@ -26,6 +28,9 @@ bot = commands.Bot(
 # bot event
 @bot.event
 async def on_ready():
+    global main_guild_object
+    discord_reply.guild_object = bot.get_guild(1112211843914670100)
+    main_guild_object = bot.get_guild(1112211843914670100)
     print(f"{datetime.now()} Bot ready")
 
 @bot.event
