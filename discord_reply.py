@@ -1,7 +1,11 @@
-import disnake
 import mysql.connector
-import mysqlrequests 
+
+import disnake
+
+import mysqlrequests
 from message import messages
+
+guild_object = None
 
 
 # заготовка для ответов
@@ -19,6 +23,7 @@ async def reply(ctx, redgreen, head, text):
     )
     await ctx.response.send_message(embed=embed)
 
+
 async def send_to(user, redgreen, head, text):
     if text in messages:
         text = messages[text]
@@ -31,6 +36,22 @@ async def send_to(user, redgreen, head, text):
         description=text,
         colour=color
     )    
+    await user.send(embed=embed)
+
+
+async def send_to_id(user_id, redgreen, head, text):
+    user = guild_object.get_member(user_id)
+    if text in messages:
+        text = messages[text]
+    if redgreen:
+        color = disnake.Colour.from_rgb(51, 153, 102)
+    else:
+        color = disnake.Colour.from_rgb(255, 102, 102)
+    embed = disnake.Embed(
+        title=head,
+        description=text,
+        colour=color
+    )
     await user.send(embed=embed)
 
 
