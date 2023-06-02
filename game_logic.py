@@ -1,5 +1,9 @@
+import math
+
 import mysqlrequests
 import discord_reply
+import walk_and_job_exp
+
 
 async def gl_add_exp(user, count):
     user.player.add_exp(count) # добавление опыта в дб
@@ -15,3 +19,8 @@ async def gl_add_exp(user, count):
     return False
 
 
+async def job_exp_list(player_level, job_type):
+    scale_player_level = math.floor(player_level / 5) * 5
+    get_type_list = walk_and_job_exp.exp_list[job_type]
+    get_type_list = get_type_list[scale_player_level]
+    return get_type_list

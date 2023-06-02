@@ -1,8 +1,11 @@
 import datetime
 from datetime import datetime
+import math
+import asyncio
 
 from disnake.utils import get
 
+import game_logic
 import mysqlrequests
 import discord_reply
 
@@ -25,7 +28,6 @@ async def register(ctx, guild):
     await discordUser.add_roles(discordRole)
     await discord_reply.send_to(discordUser, True, 'Успешная регистрация', 'kykold')
 
-    
 
 async def info(ctx):
     user = ctx.author
@@ -34,3 +36,13 @@ async def info(ctx):
         await discord_reply.reply(ctx, False, 'Регистрация', 'regerror')
         return
     await discord_reply.reply_info(ctx, 'Info')
+
+
+async def joborwalk(discord_user_id, job_type):
+    player = mysqlrequests.User(discord_user_id)
+    player = player.player
+    walk_and_job_list = await game_logic.job_exp_list(player.level, job_type)
+
+
+
+#asyncio.run(joborwalk(276766244093296640, 'walk'))

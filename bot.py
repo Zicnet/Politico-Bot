@@ -35,6 +35,7 @@ async def on_ready():
     main_guild_object = bot.get_guild(1112211843914670100)
     print(f"{datetime.now()} Bot ready")
 
+
 @bot.event
 async def on_message(message):
     msg = message.content.lower()
@@ -43,7 +44,7 @@ async def on_message(message):
     except AttributeError:
         if msg == "start":
             guild = bot.get_guild(main_guild)
-            await bot_logic.register(message,guild)
+            await bot_logic.register(message, guild)
 
 
 @bot.slash_command(name='info', description='Registration')
