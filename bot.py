@@ -51,8 +51,11 @@ async def activity(ctx):
     await ctx.send(
         "Чем хотите заняться?", 
         components = [
-            disnake.ui.Button(label="Гулять", style=disnake.ButtonStyle.success, custom_id="status_walk"),
-            disnake.ui.Button(label="Работать", style=disnake.ButtonStyle.success, custom_id="status_job")
+            disnake.ui.Button(label="🛹 | Гулять", style=disnake.ButtonStyle.gray, custom_id="status_walk"),
+            disnake.ui.Button(label="🚗 | Работать", style=disnake.ButtonStyle.gray, custom_id="status_job"),
+            disnake.ui.Button(label="🦽 | Учеба", style=disnake.ButtonStyle.gray, custom_id="status_study"),
+            disnake.ui.Button(label="🌃 | Ночной клуб", style=disnake.ButtonStyle.gray, custom_id="status_nightclub"),
+            disnake.ui.Button(label="🚤 | Постоять у яхты", style=disnake.ButtonStyle.gray, custom_id="status_stand_by_the_boat")
         ]
     )
 
@@ -73,18 +76,34 @@ async def echo(ctx, text: str):
 
 @bot.listen("on_button_click")
 async def help_listener(inter: disnake.MessageInteraction):
-    if inter.component.custom_id not in ["status_walk", "status_job"]:
+    if inter.component.custom_id not in [
+            "status_walk", 
+            "status_job",
+            "status_study",
+            "status_nightclub",
+            "status_stand_by_the_boat"
+        ]:
         return
     player =  mysqlrequests.User(inter.author.id)
     player = player.player
     if player.status != 'free':
         return
     if inter.component.custom_id == "status_walk":
-        await inter.response.send_message("Вы ушли на прогулку")
+        await inter.response.send_message("Вы ушли в лес, на прогулку")
         await bot_logic.joborwalk(player, 'walk')
     elif inter.component.custom_id == "status_job":
         await inter.response.send_message("Вы ушли плакать на работу")
         await bot_logic.joborwalk(player, 'job')
+    elif inter.component.custom_id == "status_study":
+        await inter.response.send_message("Вы ушли тратить свою жизнь на учебу")
+        await bot_logic.joborwalk(player, 'status_study')
+    elif inter.component.custom_id == "status_nightclub":
+        await inter.response.send_message("Вы все же одумались и пошли в ночной клуб")
+        await bot_logic.joborwalk(player, 'status_nightclub')
+    elif inter.component.custom_id == "status_stand_by_the_boat":
+        await inter.response.send_message("Зачеть имеет яхту, если возле нее можно просто постоять?")
+        await bot_logic.joborwalk(player, 'status_stand_by_the_boat')
+    
 
 
 @echo.error
