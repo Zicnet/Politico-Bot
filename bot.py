@@ -47,9 +47,6 @@ async def on_message(message):
             guild = bot.get_guild(main_guild)
             await bot_logic.register(message, guild)
 
-
-
-
 @bot.slash_command(name='info', description='Registration')
 async def info(ctx):
     await bot_logic.info(ctx)
